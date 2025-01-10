@@ -22,12 +22,13 @@ const submitForm = () => {
     name.value = "";
     comment.value = "";
   } else {
-    alert("Введите имя и комментарий");
+    alert("✏️ Введите имя и комментарий");
   }
 };
 </script>
 
 <template>
+  <h1 class="comment-form__title">✏️ Введите имя и комментарий</h1>
   <form class="comment-form" @submit.prevent="submitForm">
     <input
         type="text"
@@ -39,18 +40,48 @@ const submitForm = () => {
         v-model="comment"
         placeholder="Комментарий"
         required
+        rows="5"
     ></textarea>
     <button type="submit">Отправить</button>
   </form>
 </template>
 
 <style scoped>
+.comment-form__title {
+  margin-bottom: 20px;
+}
+
 .comment-form {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-bottom: 20px;
   max-width: 400px;
-  margin-inline: auto;
+  margin-right: auto;
+
+  input {
+    height: 40px;
+    padding: 0 10px;
+    border: 1px solid #cccccc;
+    border-radius: 20px;
+  }
+
+  textarea {
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 20px;
+    resize: none;
+  }
+
+  textarea::-webkit-resizer {
+    display: none;
+  }
+
+  button {
+    height: 40px;
+    border: 1px solid #cccccc;
+    border-radius: 20px;
+    cursor: pointer;
+  }
 }
 </style>

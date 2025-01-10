@@ -1,40 +1,56 @@
 <script setup lang="ts">
-  import { ref } from "vue";
-  import CommentForm from "@/components/CommentForm.vue";
-  import SortOptions from "@/components/SortOptions.vue";
-  import CommentList from "@/components/CommentList.vue";
+import {ref} from "vue";
+import CommentForm from "@/components/CommentForm.vue";
+import SortOptions from "@/components/SortOptions.vue";
+import CommentList from "@/components/CommentList.vue";
 
-  // тип комментария
-  interface Comment {
-    id: number;
-    name: string;
-    comment: string;
-    date: Date;
-    likes: number;
-  }
+// тип комментария
+interface Comment {
+  id: number;
+  name: string;
+  comment: string;
+  date: Date;
+}
 
-  // массив комментарие
-  const comments = ref<Comment[]>([]);
+// массив комментариев
+const comments = ref<Comment[]>([]);
 
-  // добавление нового комментария
-  const addComment = (playload: { name: string; comment: string }) => {
-    const newComment: Comment = {
-      id: Date.now(),
-      name: playload.name,
-      comment: playload.comment,
-      date: new Date(),
-      likes: 0
-    }
+// порядок сортировки (по возрастанию или убыванию)
+const sortOrder = ref<"asc" | "desc">("desc");
 
-    comments.value.push(newComment);
-  }
+
+// добавление нового комментария
+const addComment = (playload: { name: string; comment: string }) => {
+  const newComment: Comment = {
+    id: Date.now(),
+    name: playload.name,
+    comment: playload.comment,
+    date: new Date(),
+  };
+
+  comments.value.push(newComment);
+};
+
+// сортировка комментариев
+const sortCommentsByDate = () => {
+  const isAscending = sortOrder.value === "asc";
+  comments.value.sort((a, b) => {
+    return isAscending
+        ? a.date.getTime() - b.date.getTime()
+        : b.date.getTime() - a.date.getTime();
+  });
+
+  // инвертируем порядок сортировки
+  sortOrder.value = isAscending ? "desc" : "asc";
+};
+
 </script>
 
 <template>
   <main>
-    <CommentForm @add-comment="addComment" />
-    <SortOptions/>
-    <CommentList :comments="comments" />
+    <CommentForm @add-comment="addComment"/>
+    <SortOptions @sort="sortCommentsByDate"/>
+    <CommentList :comments="comments"/>
   </main>
 </template>
 
