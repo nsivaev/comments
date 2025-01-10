@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {defineProps} from "vue";
+import {defineProps, defineEmits} from "vue";
 
 // получение комментария через props
 const props = defineProps<{
@@ -8,7 +8,6 @@ const props = defineProps<{
     name: string;
     comment: string;
     date: Date;
-    likes: number;
   }
 }>();
 </script>
@@ -17,7 +16,6 @@ const props = defineProps<{
   <div class="comment-item">
     <p>{{ props.comment.name }} ({{ props.comment.date.toLocaleString() }})</p>
     <p>{{ props.comment.comment }}</p>
-    <p>{{ props.comment.likes }} 👍</p>
   </div>
 </template>
 

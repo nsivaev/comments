@@ -10,7 +10,6 @@ interface Comment {
   name: string;
   comment: string;
   date: Date;
-  likes: number;
 }
 
 // массив комментариев
@@ -27,26 +26,19 @@ const addComment = (playload: { name: string; comment: string }) => {
     name: playload.name,
     comment: playload.comment,
     date: new Date(),
-    likes: 0
   };
 
   comments.value.push(newComment);
 };
 
 // сортировка комментариев
-const sortComments = (sortBy: "date" | "likes") => {
+const sortCommentsByDate = () => {
   const isAscending = sortOrder.value === "asc";
-  if (sortBy === "date") {
-    comments.value.sort((a, b) => {
-      return isAscending
-          ? a.date.getTime() - b.date.getTime()
-          : b.date.getTime() - a.date.getTime();
-    });
-  } else if (sortBy === "likes") {
-    comments.value.sort((a, b) => {
-      return isAscending ? a.likes - b.likes : b.likes - a.likes;
-    });
-  }
+  comments.value.sort((a, b) => {
+    return isAscending
+        ? a.date.getTime() - b.date.getTime()
+        : b.date.getTime() - a.date.getTime();
+  });
 
   // инвертируем порядок сортировки
   sortOrder.value = isAscending ? "desc" : "asc";
@@ -57,7 +49,7 @@ const sortComments = (sortBy: "date" | "likes") => {
 <template>
   <main>
     <CommentForm @add-comment="addComment"/>
-    <SortOptions @sort="sortComments"/>
+    <SortOptions @sort="sortCommentsByDate"/>
     <CommentList :comments="comments"/>
   </main>
 </template>
