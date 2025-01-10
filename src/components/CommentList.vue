@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps } from "vue";
+import { defineProps, defineEmits } from "vue";
 import CommentItem from "@/components/CommentItem.vue";
 
 // получение списка комментариев через props
@@ -11,6 +11,16 @@ const props = defineProps<{
     date: Date;
   }[];
 }>();
+
+// эмит для удаления комментария
+const emit = defineEmits<{
+  (e: "delete-comment", commentId: number): void;
+}>();
+
+// передача id комментария на удаление
+const handleDelete = (commentId: number) => {
+  emit("delete-comment", commentId);
+};
 </script>
 
 <template>
@@ -18,7 +28,7 @@ const props = defineProps<{
   <div class="comment-list">
     <p class="comment-list__text" v-if="props.comments.length === 0">Комментариев нет</p>
     <div class="comment-list__item" v-for="comment in props.comments" :key="comment.id">
-      <CommentItem :comment="comment"/>
+      <CommentItem :comment="comment" @delete="handleDelete"/>
     </div>
   </div>
 </template>

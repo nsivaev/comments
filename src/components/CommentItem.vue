@@ -10,12 +10,23 @@ const props = defineProps<{
     date: Date;
   }
 }>();
+
+// эмит для удаления комментария
+const emit = defineEmits<{
+  (e: "delete", commentId: number): void;
+}>();
+
+// удаление комментария
+const deleteComment = () => {
+  emit("delete", props.comment.id);
+};
 </script>
 
 <template>
   <div class="comment-item">
     <p>{{ props.comment.name }} ({{ props.comment.date.toLocaleString() }})</p>
     <p>{{ props.comment.comment }}</p>
+    <button @click="deleteComment">🗑️ Удалить</button>
   </div>
 </template>
 
@@ -25,5 +36,13 @@ const props = defineProps<{
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
+
+  button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 }
 </style>
